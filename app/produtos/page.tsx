@@ -1,12 +1,13 @@
 'use client';
 
+import { Suspense } from 'react';
 import { useState, useMemo } from 'react';
 import { useSearchParams } from 'next/navigation';
 import ProductCard from '@/components/ProductCard';
 import { products } from '@/data/products';
 import { Filter, Search } from 'lucide-react';
 
-export default function ProdutosPage() {
+function ProdutosContent() {
   const searchParams = useSearchParams();
   const typeFromUrl = searchParams.get('type');
   
@@ -157,5 +158,20 @@ export default function ProdutosPage() {
         </div>
       </div>
     </div>
+  );
+}
+
+export default function ProdutosPage() {
+  return (
+    <Suspense fallback={
+      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto"></div>
+          <p className="mt-4 text-gray-600">Carregando produtos...</p>
+        </div>
+      </div>
+    }>
+      <ProdutosContent />
+    </Suspense>
   );
 }
